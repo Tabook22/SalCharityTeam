@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% crispy form form.helper %}
+{% block content %}
+{% load static %}
+<link href="{% static 'custom.css' %}" rel="stylesheet">
+
+    <div class="row">
+        <div class="text-align:center; padding:10px;">
+            <img src="https://assets-global.website-files.com/5adae4e810eb118b5da8f9bd/5e8b5ba733bd305687926abd_Screenshot%20558.png" style="width:10rem">
+        </div>
+        <div class="col-md-12">
+            <p>
+            </br>
+            </p>
+            {% if code == 1 %}
+            <p style="background-color:red;padding:20px;color:white;font-weight:bold; text-align:center;">
+                {{msg}}
+                <script>
+                $(document).ready(function(){
+                $("input[name='cardid']").focus();
+                $("input[name='cardid']").css('background-color','#eeb9ad');
+                });
+                    </script>
+            </p>
+                {% endif %}
+                {% if code == 0 %}
+                <p style="background-color:green;padding:20px;color:white;font-weight:bold;">
+                {{msg}}
+            </p>
+            {% endif%}
+        </div>
+    </div>
+    <div class="row" style="margin-top:20px;">
+        <div style="padding:10px;">
+            <a href="/" type="button" class="btn btn-primary btn-lg">إضافة جديد</a>
+        </div>
+      <form method="post" action="/ghelp/addnew/" enctype="multipart/form-data" >
+        {% csrf_token %}
+            <div class="form-row row-wrapper">
+                <div class="form-group col-md-12 mb-0 text-right">
+                    {{ form.name|as_crispy_field }}
+                </div>
+
+            </div>
+             <div class="form-row row-wrapper">
+                <div class="form-group col-md-4 mb-0 text-right">
+                    {{ form.nationality|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row row-wrapper">
+                <div class="form-group col-md-4 mb-0 text-right">
+                    {{ form.cardid|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row row-wrapper">
+                <div class="form-group col-md-12 mb-0 text-right">
+                    {{ form.uploadImg|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row row-wrapper">
+                <div class="form-group col-md-4 mb-0 text-right">
+                    {{ form.helptype|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row row-wrapper">
+                <div class="form-group col-md-12 mb-0 text-right">
+                    {{ form.comments|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row row-wrapper" style="display:flex;flex-direction:row-reverse;">
+                <button type="submit" class="btn btn-primary" style="">إرسال</button>
+            </div>
+      </form>
+</div>
+{% endblock content %}

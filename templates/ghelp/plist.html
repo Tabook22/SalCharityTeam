@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% crispy form form.helper %}
+{% block content %}
+{% load static %}
+{% for p in lst %}
+{{p.name}} <br>
+{% endfor %}
+{% endblock content %}
