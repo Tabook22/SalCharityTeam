@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+{% load static %}
+
+<form action="{% url 'ghelp:newcharity2' %}"  method='POST' enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form_post|bootstrap}}
+    {{form_upload|bootstrap}}
+   
+
+    <input class="btn btn-danger btn-block" type="submit" name="submit" value="Submit" />
+</form>
+
+{% endblock content %}

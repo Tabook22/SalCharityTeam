@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Person,  Charityapp, Charityappfiels
+from .models import Person,  Charityapp, Charityappfiels, Salct
 from .forms import addNewForm,CharityForm, CharityappfielsForm
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.forms import modelformset_factory
@@ -119,5 +119,40 @@ def newcharity(request):
                   {'postForm': postForm, 'formset': formset})
 
 
+def newcharity2(request):
+    
+    if request.method == 'POST':
+        postForm = CharityForm(request.POST) #contains the data of the user
+        formUpload =CharityappfielsForm(request.POST or None, request.FILES)
 
+        if postForm.is_valid and formUpload.is_valid:
+            post=postForm.save()
+            fls=formUpload.save(commit=False)
+            fls.charityapp=post
+            fls.save()
+            return HttpResponseRedirect("/")
+
+    else:
+        postForm = CharityForm()
+        formset = ImageFormSet(queryset=Charityappfiels.objects.none())
+    return render(request, 'ghelp/charity_app.html',
+                  {'postForm': postForm, 'formset': formset})
+
+
+
+def fxtable(request):
+    getIds=Charityapp.objects.values_list('id', flat=True).order_by('id')
+    getsalct=Salct()
+    myid=[]
+    for i in getIds:
+        if i>=35:
+            getsalct=Salct(charityapp_id=i)
+            getsalct.save();
+            myid.append(i)
+
+    print(myid)
+    context={
+        'myd':myid
+    }
+    return render(request,"ghelp/test.html", context)
 

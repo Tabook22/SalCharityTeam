@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'ghelp',
     'crispy_forms',
     'django_countries',
+    'bootstrap4',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

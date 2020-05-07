@@ -1,4 +1,8 @@
 from django.db import models
+from django.utils import timezone
+import datetime
+import os
+from uuid import uuid4
 
 # Create your models here.
 
@@ -173,19 +177,114 @@ class Charityapp(models.Model):
         return self.name
 
 class Charityappfiels(models.Model):
+    """
+    may also be a callable, such as a function, which will be called to obtain the upload path, 
+    including the filename. This callable must be able to accept two arguments, and return a 
+    Unix-style path (with forward slashes) to be passed along to the storage system. The 
+    two arguments that will be passed are:
+    1- "instance": An instance of the model where the FileField is defined. More specifically, this is the particular instance where the current file is being attached.
+    2- "filename":The filename that was originally given to the file. This may or may not be taken into account when determining the final destination path.
+    
+    """
+    # def path_and_rename(path):
+    #     def wrapper(instance, filename):
+    #         ext = filename.split('.')[-1]
+    #         # get filename
+    #         if instance.pk:
+    #             filename = '{}.{}'.format(instance.pk, ext)
+    #         else:
+    #             # set filename as random string
+    #             filename = '{}.{}'.format(uuid4().hex, ext)
+    #         # return the whole path to the file
+    #         return os.path.join(path, filename)
+    #     return wrapper
+
+    def path_and_rename(path, prefix):
+        def wrapper(instance, filename):
+            ext = filename.split('.')[-1]
+            #project = "pid_%s" % (instance.project.id,)
+            # get filename
+            if instance.pk:
+                complaint_id = "cid_%s" % (instance.pk,)
+                filename = '{}.{}.{}'.format(prefix, complaint_id, ext)
+            else:
+                # set filename as random string
+                random_id = "rid_%s" % (uuid4().hex,)
+                filename = '{}.{}.{}'.format(prefix, random_id, ext)
+                # return the whole path to the file
+                today = datetime.datetime.now()
+                path = "{year}/{month}/{day}".format(
+                year=today.year,
+                month=today.month,
+                day=today.day,
+                )
+            return os.path.join(path, filename)
+        return wrapper
+
+
     charityapp = models.ForeignKey(Charityapp, on_delete=models.CASCADE)
-    upload_1 =models.FileField(upload_to='charity_apps/%Y/%m/%d', verbose_name=" إرفاق صورة من البطاقة الشخصية أو جواز السفر", null=True, blank=True)
-    upload_2 =models.FileField(upload_to='charity_apps/%Y/%m/%d', verbose_name="إرفاق شهادة راتب أو شهادة راتب تقاعدي وان كان لايعمل شهادة إثبات من القوى العامل",null=True, blank=True)
-    upload_3 =models.FileField(upload_to='charity_apps/%Y/%m/%d', verbose_name="إرفاق صورة من شهادة الوفاة أو عقد الزواج أو وثيقة الطلاق", null=True, blank=True)
-    upload_4 =models.FileField(upload_to='charity_apps/%Y/%m/%d', verbose_name="إرفاق صور من البطاقات الشخصية أو جوازات السفر لأفراد الأسرة الكبار", null=True, blank=True)
-    upload_5 =models.FileField(upload_to='charity_apps/%Y/%m/%d', verbose_name="إرفاق صور شهادات الميلاد لأفراد الأسرة الصغار", null=True, blank=True)
-    upload_6 =models.FileField(upload_to='charity_apps/%Y/%m/%d', verbose_name="إرفاق صورة بطاقة الضمان الإجتماعي إن وجدت", null=True, blank=True)
-    upload_7 =models.FileField(upload_to='charity_apps/%Y/%m/%d', verbose_name=" (إرفاق إثبات من من الأحوال المدنية موضح فيه عدد الأبناء -( إختياري", null=True, blank=True)
-    upload_8 =models.FileField(upload_to='charity_apps/%Y/%m/%d', verbose_name="إرفاق صورة من الملكية أو عقد الإيجار", null=True, blank=True)
-    upload_9 =models.FileField(upload_to='charity_apps/%Y/%m/%d', verbose_name=" إرفاق كشف الحساب للقرض البنكي أو المديونيات لأفراد الأسرة أو الاستقطاعات التمويلية", null=True, blank=True)
-    upload_10 =models.FileField(upload_to='charity_apps/%Y/%m/%d', verbose_name="إرفاق صورة من التقرير الطبي", null=True, blank=True)
+    upload_1 =models.FileField(upload_to=path_and_rename('app_upload','charity'), verbose_name=" إرفاق صورة من البطاقة الشخصية أو جواز السفر", null=True, blank=True)
+    upload_2 =models.FileField(upload_to=path_and_rename('app_upload','charity'), verbose_name="إرفاق شهادة راتب أو شهادة راتب تقاعدي وان كان لايعمل شهادة إثبات من القوى العامل",null=True, blank=True)
+    upload_3 =models.FileField(upload_to=path_and_rename('app_upload','charity'), verbose_name="إرفاق صورة من شهادة الوفاة أو عقد الزواج أو وثيقة الطلاق", null=True, blank=True)
+    upload_4 =models.FileField(upload_to=path_and_rename('app_upload','charity'), verbose_name="إرفاق صور من البطاقات الشخصية أو جوازات السفر لأفراد الأسرة الكبار", null=True, blank=True)
+    upload_5 =models.FileField(upload_to=path_and_rename('app_upload','charity'), verbose_name="إرفاق صور شهادات الميلاد لأفراد الأسرة الصغار", null=True, blank=True)
+    upload_6 =models.FileField(upload_to=path_and_rename('app_upload','charity'), verbose_name="إرفاق صورة بطاقة الضمان الإجتماعي إن وجدت", null=True, blank=True)
+    upload_7 =models.FileField(upload_to=path_and_rename('app_upload','charity'), verbose_name=" (إرفاق إثبات من من الأحوال المدنية موضح فيه عدد الأبناء -( إختياري", null=True, blank=True)
+    upload_8 =models.FileField(upload_to=path_and_rename('app_upload','charity'), verbose_name="إرفاق صورة من الملكية أو عقد الإيجار", null=True, blank=True)
+    upload_9 =models.FileField(upload_to=path_and_rename('app_upload','charity'), verbose_name=" إرفاق كشف الحساب للقرض البنكي أو المديونيات لأفراد الأسرة أو الاستقطاعات التمويلية", null=True, blank=True)
+    upload_10 =models.FileField(upload_to=path_and_rename('app_upload','charity'), verbose_name="إرفاق صورة من التقرير الطبي", null=True, blank=True)
 
 
     def __str__(self):
         return self.post
 
+    # def path_and_rename(instance, filename):
+    #     upload_to = 'app_upload/%Y/%m/%d'
+    #     ext = filename.split('.')[-1]
+    #     # get filename
+    #     if instance.pk:
+    #         filename = '{}.{}'.format(instance.pk, ext)
+    #     else:
+    #         # set filename as random string
+    #         filename = '{}.{}'.format(uuid4().hex, ext)
+    #     # return the whole path to the file
+    #     return os.path.join(upload_to, filename)
+
+    # def path_and_rename(path):
+    #     def wrapper(instance, filename):
+    #         ext = filename.split('.')[-1]
+    #         # get filename
+    #         if instance.pk:
+    #             filename = '{}.{}'.format(instance.pk, ext)
+    #         else:
+    #             # set filename as random string
+    #             filename = '{}.{}'.format(uuid4().hex, ext)
+    #         # return the whole path to the file
+    #         return os.path.join(path, filename)
+    #     return wrapper
+
+
+
+class Salct(models.Model):
+    date = models.TextField(db_column='Date', blank=True, null=True)  # Field name made lowercase.
+    health = models.TextField(blank=True, null=True)
+    debt = models.TextField(blank=True, null=True)
+    housing = models.TextField(blank=True, null=True)
+    totalicone = models.TextField(blank=True, null=True)
+    familyno = models.TextField(blank=True, null=True)
+    soc = models.TextField(blank=True, null=True)
+    helptype = models.TextField(db_column='Helptype', blank=True, null=True)  # Field name made lowercase.
+    tel = models.TextField(blank=True, null=True)
+    name = models.TextField(blank=True, null=True)
+    upload_2 = models.TextField(blank=True, null=True)
+    upload_4 = models.TextField(blank=True, null=True)
+    upload_3 = models.TextField(blank=True, null=True)
+    upload_1 = models.TextField(blank=True, null=True)
+    upload_9 = models.TextField(db_column='Upload_9', blank=True, null=True)  # Field name made lowercase.
+    upload_8 = models.TextField(db_column='Upload_8', blank=True, null=True)  # Field name made lowercase.
+    upload_5 = models.TextField(blank=True, null=True)
+    upload_7 = models.TextField(db_column='Upload_7', blank=True, null=True)  # Field name made lowercase.
+    upload_6 = models.TextField(db_column='Upload_6', blank=True, null=True)  # Field name made lowercase.
+    upload_10 = models.TextField(blank=True, null=True)
+    upload_11 = models.TextField(blank=True, null=True)
+    charityapp_id = models.IntegerField(blank=True, null=True)
