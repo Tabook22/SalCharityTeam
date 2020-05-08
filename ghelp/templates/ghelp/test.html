@@ -1,3 +1,29 @@
-{% for i in myd %}
-{{i}}
+{{get_total}}
+<hr>
+<table>
+    <thead>
+        <tr>
+            <td>No.</td>
+            <td>Name</td>
+        </tr>
+    </thead>
+{% for i in get_img %}
+    <tbody>
+        <tr>
+            {% if forloop.first %}
+                    <p>This collection has {{ get_img|length }} Appliction:</p>
+                {% endif %}
+            <td>--{{ forloop.counter }}--</td>
+            <td>
+                {% if i.charityapp.name|title == 'سلمى مجدي الدسوقي' %}
+                <h1 style="color:red;">{{i.charityapp.name}}</h1>
+                {% else %}
+                -- {{i.charityapp.dt}}--
+                {{ i.charityapp.name }}
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+<!-- <img src="{{i.upload_1}}"> -->
 {% endfor %}
+</table>

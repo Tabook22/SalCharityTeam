@@ -141,6 +141,7 @@ def newcharity2(request):
 
 
 def fxtable(request):
+    """
     getIds=Charityapp.objects.values_list('id', flat=True).order_by('id')
     getsalct=Salct()
     myid=[]
@@ -150,9 +151,19 @@ def fxtable(request):
             getsalct.save();
             myid.append(i)
 
-    print(myid)
+    myid2=[]
+    myid2=Salct.objects.values_list('charityapp_id', flat=True).order_by('charityapp_id')
+    print(myid2)
     context={
         'myd':myid
     }
+    """
+    get_total=Charityappfiels.objects.all().count()
+    get_img=Charityappfiels.objects.all()
+    context={
+        'get_img':get_img,
+        'get_total':get_total
+    }
+   
     return render(request,"ghelp/test.html", context)
 

@@ -269,7 +269,7 @@ class Salct(models.Model):
     date = models.TextField(db_column='Date', blank=True, null=True)  # Field name made lowercase.
     health = models.TextField(blank=True, null=True)
     debt = models.TextField(blank=True, null=True)
-    housing = models.TextField(blank=True, null=True)
+    housing= models.TextField(blank=True, null=True)
     totalicone = models.TextField(blank=True, null=True)
     familyno = models.TextField(blank=True, null=True)
     soc = models.TextField(blank=True, null=True)

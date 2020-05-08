@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import addnew, plist,newcharity, newcharity2,fxtable
+from .views import addnew, plist,newcharity, newcharity2, fxtable
 
 app_name='ghelp'
 urlpatterns = [
