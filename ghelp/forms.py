@@ -74,14 +74,13 @@ class CharityForm(forms.ModelForm):
             'Helptype',
         ]
 
-
-
 class CharityappfielsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CharityappfielsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_method = 'post'
         self.helper.form_show_labels = True
+
     class Meta:
         model = Charityappfiels
         fields = [
@@ -108,8 +107,6 @@ class CharityappfielsForm(forms.ModelForm):
         'upload_9':forms.ClearableFileInput(attrs={'multiple': True}),
         'upload_10':forms.ClearableFileInput(attrs={'multiple': True}),
         }
-
-
 
 
 

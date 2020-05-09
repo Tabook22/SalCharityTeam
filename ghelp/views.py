@@ -5,6 +5,7 @@ from .forms import addNewForm,CharityForm, CharityappfielsForm
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.forms import modelformset_factory
 from django.template import RequestContext
+from django.forms.models import inlineformset_factory
 
 
 # Create your views here.
@@ -167,3 +168,47 @@ def fxtable(request):
    
     return render(request,"ghelp/test.html", context)
 
+
+#----------------------------------------- Need more coding to fix inlineformset ----------------
+# def addchrityapp(request):
+#     #This is an instance of  inlineformset to connect two modles togather , the parent model and the child model
+#     #The parent model is: Charityapp and the child model is: Charityappfiels
+#     #here we are going to reference from Charityappfiels model to Charityapp model
+#     #we have alos to tell it which fields to allow for the child object or model
+
+#     #UploadfiledForm is an instance of the formset
+#     UploadfileFormSet = inlineformset_factory(
+#         Charityapp, Charityappfiels,
+#         fields=['upload_1',
+#             'upload_2',
+#             'upload_3',
+#             'upload_4',
+#             'upload_5',
+#             'upload_6',
+#             'upload_7',
+#             'upload_8',
+#             'upload_9',
+#             'upload_10',], extra=1, can_delete=True
+#         )
+#     #here am going to create the form for the formset, notice i already created the instance of the formset
+#     # so i need to create a form for that instance
+#     postForm=CharityForm() #this form for the parenet object
+#     formset =UploadfileFormSet() 
+#     #check to see if the request method is post
+#     if request.method == "POST":
+#         postForm = CharityForm(request.POST) #contains the data of the user
+#         formset=UploadfileFormSet(request.POST or None, request.FILES)
+#         getapp_id=postForm()
+#         getapp_id.save()
+
+#         if formset.is_valid():
+#             instances=formset.save(commit=False)
+#             for i in instances:
+#                 i['charityapp']=getapp_id
+#                 i.save()
+    
+#     context={
+#         'appuser':postForm,
+#         'appatt':formUpload
+#     }
+#     return render(request,"ghelp/addnewapp.html", context)

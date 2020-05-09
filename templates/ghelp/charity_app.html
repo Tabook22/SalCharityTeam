@@ -8,23 +8,49 @@
 <script src="{% static 'dropzone.js' %}"></script>
 -->
 
-
 <form action="{% url 'ghelp:newcharity' %}" class="dropzone" id="myDropzone" method='POST'
     enctype="multipart/form-data">
     {% csrf_token %}
     {% for hidden in postForm.hidden_fields %}
     {{ hidden }}
     {% endfor %}
-
-    {% for field in postForm %}
-    <div class="form-row row-wrapper">
-        <div class="form-group col-md-4 mb-0 text-right">
-            {{ field|as_crispy_field }}
+    <div class="app_wrapper">
+        <div class="row">
+            <div class="col-sm">
+                {{postForm.name|as_crispy_field }}
+            </div>
+            <div class="col-sm">
+                {{postForm.tel|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                {{postForm.health|as_crispy_field }}
+            </div>
+            <div class="col-sm">
+                {{postForm.debt|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                {{postForm.housing|as_crispy_field }}
+            </div>
+            <div class="col-sm">
+                {{postForm.totalicone|as_crispy_field }}
+            </div>
+            <div class="col-sm">
+                {{postForm.familyno|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                {{postForm.soc|as_crispy_field }}
+            </div>
+            <div class="col-sm">
+                {{postForm.Helptype|as_crispy_field }}
+            </div>
         </div>
     </div>
-
-    {% endfor %}
-
     {{ formset.management_form }}
     <div>
         <p>المرفقات</p>

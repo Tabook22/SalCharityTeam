@@ -2,11 +2,14 @@
 {% load bootstrap4 %}
 {% block content %}
 {% load static %}
-
+{% load crispy_forms_field %}
+{% load crispy_forms_tags %}
+{% crispy form form.helper %}
 <form action="{% url 'ghelp:newcharity2' %}"  method='POST' enctype="multipart/form-data">
     {% csrf_token %}
-    {{form_post|bootstrap}}
-    {{form_upload|bootstrap}}
+    {{ form_post|crispy }}
+    <!-- {{form_post|bootstrap}} -->
+    <!-- {{form_upload|bootstrap}} -->
    
 
     <input class="btn btn-danger btn-block" type="submit" name="submit" value="Submit" />
